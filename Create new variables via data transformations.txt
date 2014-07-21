@@ -1,0 +1,10 @@
+#Visually inspect transformations for continous variables
+
+library(car)
+symbox(~ price, data=d) #variable price within dataframe d
+
+#Create new variable within dataframe d
+d$logprice <- log(d$price)
+
+#Create new variable within dataframe d to treat integer variable as a categorical variable
+d$factorcolor <- as.factor(d$color)

@@ -1,0 +1,14 @@
+#create list of outcome variables
+outcomes = c('price', 'logprice')
+
+
+#create objects for the non outcome variables in the training set
+vars <- setdiff(colnames(dTrain), 
+                c(outcomes, 'rgroup'))
+
+#create objects for the categorical and numeric variables in the training set
+catVars <- vars[sapply(dTrain[,vars], class) %in%
+                  c('factor','character')]
+numericVars <- vars[sapply(dTrain[,vars], class) %in%
+                      c('numeric', 'integer')]
+

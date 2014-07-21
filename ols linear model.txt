@@ -1,0 +1,72 @@
+#ols linear regression model
+
+#name model regressing all data within dataframe dTrain against price
+lm.naive <- lm(price ~ . , data = dTrain)
+
+
+
+#view coefficients and fit statistics
+summary(lm.naive)
+
+
+
+#residual analysis plots
+par(mfrow=c(2,2),oma=c(0,0,2,0))
+plot(lm.naive)
+
+
+
+#identify outliers
+library(car)
+outlierTest(lm.naive) # Bonferonni p-value for most extreme obs
+
+
+
+# Evaluate Collinearity
+vif(lm.naive) # variance inflation factors 
+sqrt(vif(lm.naive)) > 2 # problem?
+
+
+
+#Evaluate heteroskedasticity - significant pvalue means there IS heteroskedasticity
+library(lmtest)
+bptest(llm.naive)
+
+
+
+#name model and apply variable selection techniques
+lm.naive.backward <- step(lm.naive, direction="backward") #direction can also equal "forward" or "both" (for stepwise)
+
+
+
+#test model against train and test data set
+dTrain$predprice.lm.naive.backward <- predict(lm.naive.backward, newdata=dTrain)
+dTest$predprice.lm.naive.backward <- predict(lm.naive.backward, newdata=dTest)
+
+
+
+#scatterplot of price and predicted price on test data set
+ggplot(data=dTest,aes(x=predprice.lm.naive.backward, y=price))+
+  geom_point(alpha=0.75,color="black")+
+  geom_smooth(aes(x=predprice.lm.naive.backward, y=price), color="black")+
+  geom_line(aes(x=price,
+            y=price), color="red", linetype=2)
+
+
+
+#calculate r-squared for model against train and test data
+rsq <- function(y,f){
+  1-sum((y-f)^2)/sum((y-mean(y))^2)
+}
+rsq(dTrain$price, predict(lm.naive.backward,newdata=dTrain))
+rsq(dTest$price, predict(lm.naive.backward,newdata=dTest))
+
+
+
+#calculate root-mean-square error (RMSE) for model against train and test data
+rmse <- function(y,f){
+  sqrt(mean((y-f)^2))
+}
+
+rmse(dTrain$price, predict(lm.naive.backward, newdata=dTrain))
+rmse(dTest$price, predict(lm.naive.backward, newdata=dTest))

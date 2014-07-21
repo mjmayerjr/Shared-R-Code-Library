@@ -1,0 +1,14 @@
+#Create denisty plots for every column in a dataframe
+#and save them as pictures in the working directory
+
+plotDensityFunc <- function(x, na.rm = TRUE, ...) {
+  nm <- names(x)
+  for (i in seq_along(nm)) {
+    plots <-ggplot(x,aes_string(x = nm[i])) + geom_density(alpha =
+                                                             .5,fill = "purple")
+    ggsave(plots,filename=paste("density",nm[i],".png",sep=""))
+  }
+}
+
+#Input the name of a data frame
+plotDensityFunc(d) 

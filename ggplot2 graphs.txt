@@ -1,0 +1,15 @@
+#ggplot2 graphs
+library(ggplot2)
+
+
+#Scatterplots
+ggplot(d, aes(x=logcarat, y=logprice)) +
+  geom_point(position=position_jitter(w=0.05, h=0.05)) +
+  geom_smooth() 
+
+
+#Boxplots
+ggplot(d,  aes(x=factorcolor, y=logprice, fill=factorcolor))+
+  geom_boxplot(alpha=0.6) + guides(fill=FALSE)
+
+

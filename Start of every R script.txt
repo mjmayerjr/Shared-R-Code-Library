@@ -1,0 +1,7 @@
+#Start of every R script should be setting your working directory
+#Note the double slashes that are necessary
+
+
+my.path <- "D:\\Users\\michael_mayer\\Dropbox\\_MSPA\\Courses\\4rth Quarter\\PREDICT 412\\Session 4\\Assignment 2";
+setwd(my.path)
+
